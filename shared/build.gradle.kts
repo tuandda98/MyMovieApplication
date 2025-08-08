@@ -4,6 +4,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+
+    //Kotlinx Serialization
+    kotlin("plugin.serialization") version "1.8.0"
 }
 
 kotlin {
@@ -24,10 +27,18 @@ kotlin {
             isStatic = true
         }
     }
-    
+    //Dependencies versions
+    val coroutinesVersion = "1.6.4"
+    val ktorVersion = "2.2.1"
+    val koinVersion = "3.3.2"
     sourceSets {
         commonMain.dependencies {
-            // put your Multiplatform dependencies here
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}")
+            implementation("io.ktor:ktor-client-core:${ktorVersion}")
+            implementation("io.ktor:ktor-client-content-negotiation:${ktorVersion}")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:${ktorVersion}")
+//Use api so that the android app can use it as well
+            api("io.insert-koin:koin-core:${koinVersion}")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
