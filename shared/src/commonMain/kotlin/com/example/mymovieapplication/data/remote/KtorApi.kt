@@ -22,7 +22,6 @@ internal abstract class KtorApi {
 
     fun HttpRequestBuilder.pathUrl(path: String){
         url("$BASE_URL/$path")
-        println("url url url: $path.")
         header(HttpHeaders.Authorization, "Bearer $BEARER_TOKEN")
         header(HttpHeaders.Accept, "application/json")
     }

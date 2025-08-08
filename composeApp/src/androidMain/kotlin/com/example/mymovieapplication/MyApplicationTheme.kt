@@ -1,14 +1,10 @@
 package com.example.mymovieapplication
 
 import androidx.compose.foundation.shape.RoundedCornerShape
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.MaterialTheme
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Shapes
 import androidx.compose.material.Typography
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.darkColors
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color

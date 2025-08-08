@@ -10,7 +10,7 @@ import com.example.mymovieapplication.domain.usecase.GetMoviesUseCase
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    val getMoviesUseCase: GetMoviesUseCase
+    private val getMoviesUseCase: GetMoviesUseCase
 ): ViewModel(){
     var uiState by mutableStateOf(HomeScreenState())
     private var currentPage = 1

@@ -11,10 +11,8 @@ internal class MovieService: KtorApi() {
             parameter("page", page)
             parameter("language", "en-US")
         }
-        println("Response status: ${response.status}")
         response.body()
     } catch (e: Exception) {
-        println("Error getting movies: ${e.message}")
         throw e
     }
 
@@ -22,10 +20,8 @@ internal class MovieService: KtorApi() {
         val response = client.get {
             pathUrl("movie/${movieId}")
         }
-        println("Response status: ${response.status}")
         response.body()
     } catch (e: Exception) {
-        println("Error getting movie: ${e.message}")
         throw e
     }
 }
