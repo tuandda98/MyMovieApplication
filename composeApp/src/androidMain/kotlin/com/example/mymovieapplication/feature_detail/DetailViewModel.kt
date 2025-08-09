@@ -1,19 +1,22 @@
 package com.example.mymovieapplication.feature_detail
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mymovieapplication.core.util.Result
 import com.example.mymovieapplication.feature.movie.domain.model.Movie
 import com.example.mymovieapplication.feature.movie.domain.usecase.GetMovieUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class DetailViewModel(
-    val getMovieUseCase: GetMovieUseCase,
-    val movieId: Int
+    private val getMovieUseCase: GetMovieUseCase,
+    movieId: Int
 ): ViewModel(){
-    var uiState by mutableStateOf(DetailScreenState())
+
+    private val _uiState = MutableStateFlow(DetailScreenState())
+    val uiState: StateFlow<DetailScreenState> = _uiState.asStateFlow()
 
     init {
         loadMovie(movieId)
@@ -21,25 +24,35 @@ class DetailViewModel(
 
     private fun loadMovie(movieId: Int){
         viewModelScope.launch {
-            uiState = uiState.copy(loading = true)
-
-            uiState = try {
-                val movie = getMovieUseCase(movieId = movieId)
-                uiState.copy(loading = false, movie = movie)
-            }catch (error: Throwable){
-                uiState.copy(
-                    loading = false,
-                    errorMessage = "Could not load the movie"
-                )
+            getMovieUseCase(movieId = movieId).collect { result ->
+                when(result) {
+                    is Result.Success -> {
+                        _uiState.value = _uiState.value.copy(
+                            loading = false,
+                            movie = result.data,
+                            errorMessage = null
+                        )
+                    }
+                    is Result.Error -> {
+                        _uiState.value = _uiState.value.copy(
+                            loading = false,
+                            movie = null,
+                            errorMessage = result.exception.message ?: "Could not load the movie"
+                        )
+                    }
+                    is Result.Loading -> {
+                        _uiState.value = _uiState.value.copy(loading = true)
+                    }
+                }
             }
         }
     }
 }
 
 data class DetailScreenState(
-    var loading: Boolean = false,
-    var movie: Movie? = null,
-    var errorMessage: String? = null
+    val loading: Boolean = false,
+    val movie: Movie? = null,
+    val errorMessage: String? = null
 )
 
 

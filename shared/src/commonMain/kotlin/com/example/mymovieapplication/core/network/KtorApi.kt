@@ -1,10 +1,12 @@
 package com.example.mymovieapplication.core.network
 
-import io.ktor.client.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.request.*
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.header
+import io.ktor.client.request.url
+import io.ktor.http.HttpHeaders
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 private const val BASE_URL = "https://api.themoviedb.org/3"

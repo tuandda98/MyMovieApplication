@@ -1,11 +1,11 @@
 package com.example.mymovieapplication.feature.movie.data.remote
 
 import com.example.mymovieapplication.core.network.KtorApi
-import com.example.mymovieapplication.feature.movie.data.remote.dto.MovieDto
 import com.example.mymovieapplication.feature.movie.data.remote.dto.ListMoviesDto
-import io.ktor.client.call.*
-import io.ktor.client.request.*
-import kotlin.collections.get
+import com.example.mymovieapplication.feature.movie.data.remote.dto.MovieDto
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 
 internal class MovieApi: KtorApi() {
 

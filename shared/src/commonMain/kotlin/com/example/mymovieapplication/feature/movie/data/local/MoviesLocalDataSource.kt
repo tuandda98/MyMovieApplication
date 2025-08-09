@@ -1,7 +1,6 @@
 package com.example.mymovieapplication.feature.movie.data.local
 
 import com.example.mymovieapplication.feature.movie.domain.model.Movie
-import kotlin.text.toInt
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 

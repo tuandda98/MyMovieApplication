@@ -1,38 +1,35 @@
 package com.example.mymovieapplication.core.navigation
 
+import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 
-interface Destination {
+sealed interface Destination {
     val title: String
     val route: String
     val routeWithArgs: String
+    val arguments: List<NamedNavArgument>
+        get() = emptyList()
 }
 
-object Home: Destination{
-    override val title: String
-        get() = "Movies"
-
-    override val route: String
-        get() = "home"
-
-    override val routeWithArgs: String
-        get() = route
+data object Home : Destination {
+    override val title: String = "Movies"
+    override val route: String = "home"
+    override val routeWithArgs: String = route
 }
 
-object Detail: Destination{
-    override val title: String
-        get() = "Movie details"
+data object Detail : Destination {
+    override val title: String = "Movie details"
+    override val route: String = "detail"
+    override val routeWithArgs: String = "$route/{$MOVIE_ID_ARG}"
 
-    override val route: String
-        get() = "detail"
+    const val MOVIE_ID_ARG = "movieId"
 
-    override val routeWithArgs: String
-        get() = "$route/{movieId}"
-
-    val arguments = listOf(
-        navArgument(name = "movieId"){type = NavType.IntType}
+    override val arguments = listOf(
+        navArgument(MOVIE_ID_ARG) { type = NavType.IntType }
     )
+
+    fun createRoute(movieId: Int): String = "$route/$movieId"
 }
 
 val movieDestinations = listOf(Home, Detail)

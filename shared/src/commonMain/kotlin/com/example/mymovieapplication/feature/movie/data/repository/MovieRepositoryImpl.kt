@@ -1,34 +1,55 @@
 package com.example.mymovieapplication.feature.movie.data.repository
 
+import com.example.mymovieapplication.core.util.Result
+import com.example.mymovieapplication.core.util.safeApiCall
 import com.example.mymovieapplication.feature.movie.data.remote.RemoteDataSource
 import com.example.mymovieapplication.feature.movie.data.remote.dto.toMovie
 import com.example.mymovieapplication.feature.movie.domain.model.Movie
 import com.example.mymovieapplication.feature.movie.domain.repository.MovieRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 internal class MovieRepositoryImpl(
     private val remoteDateSource: RemoteDataSource
-): MovieRepository {
+) : MovieRepository {
 
-    override suspend fun getMovies(page: Int): List<Movie> {
-        return if (page == 1) {
-            // Use cached trending movies for page 1
-            remoteDateSource.getMoviesFromDB()
+    override fun getMovies(page: Int): Flow<Result<List<Movie>>> = flow {
+        emit(Result.Loading)
+        val result = if (page == 1) {
+            safeApiCall { remoteDateSource.getMoviesFromDB() }
         } else {
-            // Fetch directly from API for other pages
-            remoteDateSource.getMovies(page = page).results.map { it.toMovie() }
+            safeApiCall {
+                remoteDateSource.getMovies(page = page).results.map { it.toMovie() }
+            }
         }
+        emit(result)
     }
 
-    override suspend fun getMovie(movieId: Int): Movie {
-        return try {
+    override fun getMovie(movieId: Int): Flow<Result<Movie>> = flow {
+        emit(Result.Loading)
+        val result = safeApiCall {
             remoteDateSource.getMovie(movieId = movieId).toMovie()
-        } catch (e: Exception) {
-            remoteDateSource.getMovieFromDB(movieId)
-                ?: throw Exception("Movie not found in cache and network unavailable")
+        }
+
+        when (result) {
+            is Result.Success -> emit(result)
+            is Result.Error -> {
+                val cachedMovie = remoteDateSource.getMovieFromDB(movieId)
+                if (cachedMovie != null) {
+                    emit(Result.Success(cachedMovie))
+                } else {
+                    emit(Result.Error(Exception("Movie not found in cache and network unavailable")))
+                }
+            }
+            is Result.Loading -> emit(result)
         }
     }
 
-    override suspend fun searchMovies(query: String, page: Int): List<Movie> {
-        return remoteDateSource.searchMovies(query, page).results.map { it.toMovie() }
+    override fun searchMovies(query: String, page: Int): Flow<Result<List<Movie>>> = flow {
+        emit(Result.Loading)
+        val result = safeApiCall {
+            remoteDateSource.searchMovies(query, page).results.map { it.toMovie() }
+        }
+        emit(result)
     }
 }
