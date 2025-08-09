@@ -8,7 +8,9 @@ internal fun MovieDto.toMovie(): Movie{
         title = title,
         description = overview,
         imageUrl = getImageUrl(posterImage),
-        releaseDate = releaseDate
+        releaseDate = releaseDate,
+        voteAverage = voteAverage
+
     )
 }
 

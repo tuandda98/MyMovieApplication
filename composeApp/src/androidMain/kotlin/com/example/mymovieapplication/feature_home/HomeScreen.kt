@@ -74,38 +74,62 @@ fun HomeScreen(
                     .padding(start = 16.dp, bottom = 8.dp)
             )
 
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                itemsIndexed(
-                    uiState.movies,
-                    key = { index, movie -> "${movie.id}_$index" }
-                ) { index, movie ->
-                    MovieListItem(movie = movie, onMovieClick = { navigateToDetail(movie) })
-
-                    if (searchQuery.isEmpty() && index >= uiState.movies.size - 1 && !uiState.loading && !uiState.loadFinished) {
-                        // Only load next page for trending, not for search
-                        androidx.compose.runtime.LaunchedEffect(key1 = Unit) {
-                            loadNextMovies(false)
-                        }
+            // Show empty state when search has no results
+            if (searchQuery.isNotEmpty() && uiState.movies.isEmpty() && !uiState.loading) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "No movies found",
+                            style = MaterialTheme.typography.h6,
+                            color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
+                        )
+                        Text(
+                            text = "Try searching with different keywords",
+                            style = MaterialTheme.typography.body2,
+                            color = MaterialTheme.colors.onSurface.copy(alpha = 0.4f),
+                            modifier = Modifier.padding(top = 8.dp)
+                        )
                     }
                 }
+            } else {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    itemsIndexed(
+                        uiState.movies,
+                        key = { index, movie -> "${movie.id}_$index" }
+                    ) { index, movie ->
+                        MovieListItem(movie = movie, onMovieClick = { navigateToDetail(movie) })
 
-                if (uiState.loading && uiState.movies.isNotEmpty()) {
-                    item(span = { GridItemSpan(2) }) {
-                        Row(
-                            modifier = modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            CircularProgressIndicator(
-                                color = Red
-                            )
+                        if (searchQuery.isEmpty() && index >= uiState.movies.size - 1 && !uiState.loading && !uiState.loadFinished) {
+                            // Only load next page for trending, not for search
+                            androidx.compose.runtime.LaunchedEffect(key1 = Unit) {
+                                loadNextMovies(false)
+                            }
+                        }
+                    }
+
+                    if (uiState.loading && uiState.movies.isNotEmpty()) {
+                        item(span = { GridItemSpan(2) }) {
+                            Row(
+                                modifier = modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                CircularProgressIndicator(
+                                    color = Red
+                                )
+                            }
                         }
                     }
                 }

@@ -11,5 +11,7 @@ internal data class MovieDto(
     @SerialName("poster_path")
     val posterImage: String,
     @SerialName("release_date")
-    val releaseDate: String
+    val releaseDate: String,
+    @SerialName("vote_average")
+    val voteAverage: Double
 )

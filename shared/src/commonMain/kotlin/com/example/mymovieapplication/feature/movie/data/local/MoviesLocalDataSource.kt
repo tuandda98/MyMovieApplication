@@ -18,7 +18,8 @@ internal class MoviesLocalDataSource(
                     title = it.title,
                     description = it.description,
                     imageUrl = it.imageUrl,
-                    releaseDate = it.releaseDate
+                    releaseDate = it.releaseDate,
+                    voteAverage = it.voteAverage
                 )
             }
         } catch (e: Exception) {
@@ -40,7 +41,8 @@ internal class MoviesLocalDataSource(
                     title = it.title,
                     description = it.description,
                     imageUrl = it.imageUrl,
-                    releaseDate = it.releaseDate
+                    releaseDate = it.releaseDate,
+                    voteAverage = it.voteAverage
                 )
             }
         } else {
@@ -63,7 +65,8 @@ internal class MoviesLocalDataSource(
                     description = movie.description,
                     imageUrl = movie.imageUrl,
                     releaseDate = movie.releaseDate,
-                    cacheTimestamp = currentTimestamp
+                    cacheTimestamp = currentTimestamp,
+                    voteAverage = movie.voteAverage
                 )
             }
         }

@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.mymovieapplication.R
+import com.example.mymovieapplication.core.ui.StarRating
 import com.example.mymovieapplication.feature.movie.domain.model.Movie
 
 @Composable
@@ -81,23 +82,13 @@ fun MovieListItem(
                 )
                 Spacer(modifier = modifier.height(4.dp))
 
+                StarRating(
+                    voteAverage = movie.voteAverage,
+                    starSize = 16.dp
+                )
+                Spacer(modifier = modifier.height(2.dp))
                 Text(text = movie.releaseDate, style = MaterialTheme.typography.caption)
             }
         }
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

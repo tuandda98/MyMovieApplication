@@ -31,6 +31,7 @@ import coil.compose.AsyncImage
 import com.example.mymovieapplication.R
 import com.example.mymovieapplication.core.ui.ErrorSnackbarHandler
 import com.example.mymovieapplication.core.ui.Red
+import com.example.mymovieapplication.core.ui.StarRating
 
 @Composable
 fun DetailScreen(
@@ -81,6 +82,13 @@ fun DetailScreen(
                         )
                         Spacer(modifier = modifier.height(8.dp))
 
+                        StarRating(
+                            voteAverage = movie.voteAverage,
+                            starSize = 20.dp,
+                            showRating = true
+                        )
+                        Spacer(modifier = modifier.height(16.dp))
+
                         Button(
                             onClick = {},
                             modifier = modifier.fillMaxWidth().height(46.dp),
@@ -129,19 +137,3 @@ fun DetailScreen(
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -4,6 +4,7 @@ CREATE TABLE trending_movies (
     description TEXT NOT NULL,
     imageUrl TEXT NOT NULL,
     releaseDate TEXT NOT NULL,
+    voteAverage REAL NOT NULL,
     cacheTimestamp INTEGER NOT NULL
 );
 
@@ -26,7 +27,7 @@ DELETE FROM trending_movies;
 -- Query to insert a new movie into the cache
 insert:
 INSERT INTO trending_movies (
-    id, title, description, imageUrl, releaseDate, cacheTimestamp
+    id, title, description, imageUrl, releaseDate, voteAverage, cacheTimestamp
 ) VALUES (
-    ?, ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?, ?
 );
