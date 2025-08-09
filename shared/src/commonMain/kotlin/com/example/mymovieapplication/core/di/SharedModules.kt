@@ -8,6 +8,7 @@ import com.example.mymovieapplication.feature.movie.data.repository.MovieReposit
 import com.example.mymovieapplication.feature.movie.domain.repository.MovieRepository
 import com.example.mymovieapplication.feature.movie.domain.usecase.GetMovieUseCase
 import com.example.mymovieapplication.feature.movie.domain.usecase.GetMoviesUseCase
+import com.example.mymovieapplication.feature.movie.domain.usecase.SearchMoviesUseCase
 import org.koin.dsl.module
 
 private val dataModule = module {
@@ -23,6 +24,7 @@ private val domainModule = module {
     single<MovieRepository> { MovieRepositoryImpl(get()) }
     factory { GetMoviesUseCase() }
     factory { GetMovieUseCase() }
+    factory { SearchMoviesUseCase() }
 }
 
 private val sharedModules = listOf(domainModule, dataModule, utilityModule)

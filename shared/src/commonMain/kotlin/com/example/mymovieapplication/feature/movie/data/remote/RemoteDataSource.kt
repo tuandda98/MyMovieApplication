@@ -15,4 +15,8 @@ internal class RemoteDataSource(
     suspend fun getMovie(movieId: Int) = withContext(dispatcher.io){
         apiService.getMovie(movieId = movieId)
     }
+
+    suspend fun searchMovies(query: String, page: Int) = withContext(dispatcher.io) {
+        apiService.searchMovies(query, page)
+    }
 }

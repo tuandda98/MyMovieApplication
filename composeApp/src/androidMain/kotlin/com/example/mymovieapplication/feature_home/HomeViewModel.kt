@@ -1,4 +1,4 @@
-package com.example.mymovieapplication.featurehome
+package com.example.mymovieapplication.feature_home
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,11 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mymovieapplication.feature.movie.domain.model.Movie
 import com.example.mymovieapplication.feature.movie.domain.usecase.GetMoviesUseCase
+import com.example.mymovieapplication.feature.movie.domain.usecase.SearchMoviesUseCase
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val getMoviesUseCase: GetMoviesUseCase
+    private val getMoviesUseCase: GetMoviesUseCase,
+    private val searchMoviesUseCase: SearchMoviesUseCase
 ): ViewModel(){
+    var searchQuery by mutableStateOf("")
     var uiState by mutableStateOf(HomeScreenState())
     private var currentPage = 1
 
@@ -48,6 +51,35 @@ class HomeViewModel(
                     refreshing = false,
                     loadFinished = true,
                     errorMessage = "Could not load movies: ${error.localizedMessage}"
+                )
+            }
+        }
+    }
+
+
+    fun onSearchQueryChanged(query: String) {
+        searchQuery = query
+        if (query.isEmpty()) {
+            loadMovies(forceReload = true)
+        } else {
+            searchMovies(query)
+        }
+    }
+
+    private fun searchMovies(query: String) {
+        viewModelScope.launch {
+            uiState = uiState.copy(loading = true)
+            try {
+                val movies = searchMoviesUseCase(query, 1)
+                uiState = uiState.copy(
+                    loading = false,
+                    movies = movies,
+                    loadFinished = true
+                )
+            } catch (error: Throwable) {
+                uiState = uiState.copy(
+                    loading = false,
+                    errorMessage = "Could not search movies: ${error.localizedMessage}"
                 )
             }
         }

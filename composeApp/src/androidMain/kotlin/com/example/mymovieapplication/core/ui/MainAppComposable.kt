@@ -20,7 +20,7 @@ import com.example.mymovieapplication.core.navigation.movieDestinations
 import com.example.mymovieapplication.feature_detail.DetailScreen
 import com.example.mymovieapplication.feature_detail.DetailViewModel
 import com.example.mymovieapplication.feature_home.HomeScreen
-import com.example.mymovieapplication.featurehome.HomeViewModel
+import com.example.mymovieapplication.feature_home.HomeViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -67,8 +67,10 @@ fun MainAppComposable() {
                 val homeViewModel: HomeViewModel = koinViewModel()
                 HomeScreen(
                     uiState = homeViewModel.uiState,
+                    searchQuery = homeViewModel.searchQuery,
+                    onSearchQueryChanged = { homeViewModel.onSearchQueryChanged(it) },
                     loadNextMovies = {
-                                     homeViewModel.loadMovies(forceReload = it)
+                        homeViewModel.loadMovies(forceReload = it)
                     },
                     navigateToDetail = {
                         navController.navigate(

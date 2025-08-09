@@ -18,4 +18,8 @@ internal class MovieRepositoryImpl(
     override suspend fun getMovie(movieId: Int): Movie {
         return remoteDateSource.getMovie(movieId = movieId).toMovie()
     }
+
+    override suspend fun searchMovies(query: String, page: Int): List<Movie> {
+        return remoteDateSource.searchMovies(query, page).results.map { it.toMovie() }
+    }
 }
