@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinSerialization)
+    id("app.cash.sqldelight")
 }
 
 kotlin {
@@ -38,6 +39,7 @@ kotlin {
 
                 //Use api so that the android app can use it as well
                 api("io.insert-koin:koin-core:3.3.2")
+                implementation("app.cash.sqldelight:runtime:2.1.0")
             }
         }
 
@@ -54,6 +56,7 @@ kotlin {
                 implementation(libs.ktor.client.android)
 
                 api("io.insert-koin:koin-android:3.3.2")
+                implementation("app.cash.sqldelight:android-driver:2.1.0")
             }
         }
 
@@ -66,6 +69,7 @@ kotlin {
         val iosMain by creating {
             dependencies{
                 implementation(libs.ktor.client.darwin)
+                implementation("app.cash.sqldelight:native-driver:2.1.0")
             }
 
             dependsOn(commonMain)
@@ -84,7 +88,13 @@ kotlin {
         }
     }
 }
-
+sqldelight {
+    databases {
+        create("MovieDatabase") {
+            packageName.set("com.example.mymovieapplication.feature.movie.data.local")
+        }
+    }
+}
 android {
     namespace = "com.example.mymovieapplication.shared"
     compileSdk = libs.versions.android.compileSdk.get().toInt()

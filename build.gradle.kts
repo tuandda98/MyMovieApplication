@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.kotlinSerialization) apply false
+    id("app.cash.sqldelight") version "2.1.0" apply false
 }
 
 tasks.register("clean", Delete::class) {

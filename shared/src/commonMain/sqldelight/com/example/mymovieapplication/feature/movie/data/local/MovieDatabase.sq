@@ -1,0 +1,28 @@
+CREATE TABLE trending_movies (
+    id INTEGER NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    imageUrl TEXT NOT NULL,
+    releaseDate TEXT NOT NULL,
+    cacheTimestamp INTEGER NOT NULL
+);
+
+-- Query to select all trending movies
+selectAll:
+SELECT * FROM trending_movies;
+
+-- Query to get the latest cache timestamp
+getLatestTimestamp:
+SELECT MAX(cacheTimestamp) AS latestTimestamp FROM trending_movies;
+
+-- Query to clear all cached movies
+clearAll:
+DELETE FROM trending_movies;
+
+-- Query to insert a new movie into the cache
+insert:
+INSERT INTO trending_movies (
+    id, title, description, imageUrl, releaseDate, cacheTimestamp
+) VALUES (
+    ?, ?, ?, ?, ?, ?
+);

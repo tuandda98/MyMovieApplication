@@ -10,8 +10,12 @@ internal class MovieRepositoryImpl(
 ): MovieRepository {
 
     override suspend fun getMovies(page: Int): List<Movie> {
-        return remoteDateSource.getMovies(page = page).results.map {
-            it.toMovie()
+        return if (page == 1) {
+            // Use cached trending movies for page 1
+            remoteDateSource.getTrendingMovies()
+        } else {
+            // Fetch directly from API for other pages
+            remoteDateSource.getMovies(page = page).results.map { it.toMovie() }
         }
     }
 
