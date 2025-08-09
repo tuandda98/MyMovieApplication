@@ -1,13 +1,32 @@
 package com.example.mymovieapplication.feature.movie.data.local
 
 import com.example.mymovieapplication.feature.movie.domain.model.Movie
+import kotlin.text.toInt
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
-internal class TrendingMoviesLocalDataSource(
+internal class MoviesLocalDataSource(
     private val database: MovieDatabase
 ) {
     private val queries = database.movieDatabaseQueries
+
+    @OptIn(ExperimentalTime::class)
+    suspend fun getMovieById(id: Int): Movie? {
+        return try {
+            queries.selectMovieById(id.toLong()).executeAsOneOrNull()?.let {
+                Movie(
+                    id = it.id.toInt(),
+                    title = it.title,
+                    description = it.description,
+                    imageUrl = it.imageUrl,
+                    releaseDate = it.releaseDate
+                )
+            }
+        } catch (e: Exception) {
+            // Log error or handle database exceptions
+            null
+        }
+    }
 
     @OptIn(ExperimentalTime::class)
     suspend fun getTrendingMovies(

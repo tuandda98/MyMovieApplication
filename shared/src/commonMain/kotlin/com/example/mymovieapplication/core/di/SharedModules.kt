@@ -3,7 +3,7 @@ package com.example.mymovieapplication.core.di
 import com.example.mymovieapplication.core.database.DatabaseDriverFactory
 import com.example.mymovieapplication.core.util.provideDispatcher
 import com.example.mymovieapplication.feature.movie.data.local.MovieDatabase
-import com.example.mymovieapplication.feature.movie.data.local.TrendingMoviesLocalDataSource
+import com.example.mymovieapplication.feature.movie.data.local.MoviesLocalDataSource
 import com.example.mymovieapplication.feature.movie.data.remote.MovieApi
 import com.example.mymovieapplication.feature.movie.data.remote.RemoteDataSource
 import com.example.mymovieapplication.feature.movie.data.repository.MovieRepositoryImpl
@@ -15,7 +15,7 @@ import org.koin.dsl.module
 
 private val dataModule = module {
     single<MovieDatabase> { createDatabase(get()) }
-    factory { TrendingMoviesLocalDataSource(get()) }
+    factory { MoviesLocalDataSource(get()) }
     factory { RemoteDataSource(get(), get(), get()) }
     factory { MovieApi() }
 }

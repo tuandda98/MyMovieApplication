@@ -7,6 +7,10 @@ CREATE TABLE trending_movies (
     cacheTimestamp INTEGER NOT NULL
 );
 
+-- Query to select a movie by ID
+selectMovieById:
+SELECT * FROM trending_movies WHERE id = ?;
+
 -- Query to select all trending movies
 selectAll:
 SELECT * FROM trending_movies;
