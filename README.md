@@ -67,7 +67,6 @@ shared/
            model/          (Movie / MovieDetail entities)
            repository/     (Repository interface)
            usecase/        (GetTrending, SearchMovies, GetMovieDetail ...)
-         presentation/ (optional shared ViewModels if added)
 ```
 
 Android-specific or iOS-specific implementations (drivers, engines) live under:
