@@ -4,6 +4,7 @@ A sample Kotlin Multiplatform (Android + iOS) application that lists today’s t
 
 The project follows modern Google-recommended architecture (Clean Architecture + MVVM + Unidirectional Data Flow) and shares as much logic as possible between Android and iOS (networking, caching, domain logic, use cases, DI).
 
+video demo : https://youtube.com/shorts/hQZDqnlmlkU?feature=share
 ---
 
 ## Features
